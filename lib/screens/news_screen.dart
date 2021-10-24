@@ -1,5 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:estefania_montoya_6_2021_2_p1/components/loader_component.dart';
 import 'package:estefania_montoya_6_2021_2_p1/screens/new_info_screen.dart';
 import 'package:estefania_montoya_6_2021_2_p1/helpers/api_helper.dart';
 import 'package:estefania_montoya_6_2021_2_p1/models/new.dart';
@@ -18,24 +19,44 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryState extends State<CategoryScreen> {
   List<New> _news = [];
-
   bool _showLoader = false;
+  bool _isFiltered = false;
+  String _search = '';
 
   @override
   void initState() {
-    print(widget.category);
     super.initState();
     _getNews();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('ke${_news.length}');
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Category News ${widget.category}'),
+          actions: <Widget>[
+            _isFiltered
+                ? IconButton(
+                    onPressed: _removeFilter, icon: Icon(Icons.filter_none))
+                : IconButton(
+                    onPressed: _showFilter, icon: Icon(Icons.filter_alt))
+          ],
+        ),
+        body: Center(
+          child: _showLoader
+              ? LoaderComponent(text: 'Por favor espere...')
+              : _getContent(),
+        ));
+  }
+
+  @override
+  Widget _getListView() {
     return RefreshIndicator(
       onRefresh: _getNews,
       child: ListView(
         children: _news.map((e) {
           return Card(
+              color: Color(0XFFDCE9F3),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30)),
               margin: EdgeInsets.all(15),
@@ -115,5 +136,88 @@ class _CategoryState extends State<CategoryScreen> {
     if (result == 'yes') {
       _getNews();
     }
+  }
+
+  void _removeFilter() {
+    setState(() {
+      _isFiltered = false;
+    });
+    _getNews();
+  }
+
+  void _showFilter() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: Text('Filter news'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text('Write the first letters of the title of the news'),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  autofocus: true,
+                  decoration: InputDecoration(
+                      hintText: 'Search criteria...',
+                      labelText: 'Search',
+                      suffixIcon: Icon(Icons.search)),
+                  onChanged: (value) {
+                    _search = value;
+                  },
+                )
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Cancelar')),
+              TextButton(onPressed: () => _filter(), child: Text('Filter')),
+            ],
+          );
+        });
+  }
+
+  void _filter() {
+    if (_search.isEmpty) {
+      return;
+    }
+
+    List<New> filteredList = [];
+    for (var new1 in _news) {
+      if (new1.title.toLowerCase().contains(_search.toLowerCase())) {
+        filteredList.add(new1);
+      }
+    }
+
+    setState(() {
+      _news = filteredList;
+      _isFiltered = true;
+    });
+
+    Navigator.of(context).pop();
+  }
+
+  Widget _getContent() {
+    return _news.length == 0 ? _noContent() : _getListView();
+  }
+
+  Widget _noContent() {
+    return Center(
+      child: Container(
+        margin: EdgeInsets.all(20),
+        child: Text(
+          _isFiltered
+              ? 'There is no news with that search criteria.'
+              : 'No news registered.',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
   }
 }

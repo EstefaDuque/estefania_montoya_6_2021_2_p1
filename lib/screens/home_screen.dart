@@ -1,4 +1,4 @@
-import 'package:estefania_montoya_6_2021_2_p1/screens/category_screen.dart';
+import 'package:estefania_montoya_6_2021_2_p1/screens/news_screen.dart';
 import 'package:estefania_montoya_6_2021_2_p1/helpers/constans.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final title = 'News';
+    final title = 'News categories';
 
     return Scaffold(
       appBar: AppBar(
