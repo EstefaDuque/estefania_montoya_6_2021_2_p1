@@ -1,4 +1,4 @@
-import 'package:estefania_montoya_6_2021_2_p1/home_screen.dart';
+import 'package:estefania_montoya_6_2021_2_p1/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());

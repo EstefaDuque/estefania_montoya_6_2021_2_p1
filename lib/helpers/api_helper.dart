@@ -22,12 +22,10 @@ class ApiHelper {
 
     List<New> news = [];
     if (response.statusCode == 200) {
-      print('entro');
       String body = utf8.decode(response.bodyBytes);
 
       final jsonData = jsonDecode(body);
       for (var i = 0; i < jsonData['data'].length; i++) {
-        print(jsonData['data'][0]);
         news.add(New.fromJson(jsonData['data'][i]));
       }
     }

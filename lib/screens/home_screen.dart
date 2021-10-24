@@ -1,4 +1,4 @@
-import 'package:estefania_montoya_6_2021_2_p1/category_screen.dart';
+import 'package:estefania_montoya_6_2021_2_p1/screens/category_screen.dart';
 import 'package:estefania_montoya_6_2021_2_p1/helpers/constans.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title,
             textAlign: TextAlign.center,
           ),
-          backgroundColor: Color(0XFF5B54FA)),
+          backgroundColor: Color(0XFF41A5F0)),
       body: GridView.count(
         // Crea una grid con 2 columnas. Si cambias el scrollDirection a
         // horizontal, esto produciría 2 filas.
@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 5.0,
                   height: 10.0,
                   decoration: BoxDecoration(
-                    color: Color(0XFF538FFB),
+                    color: Color(0XFFC2E4FD),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Text(item,

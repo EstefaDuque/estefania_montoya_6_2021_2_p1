@@ -1,5 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:estefania_montoya_6_2021_2_p1/screens/new_info_screen.dart';
 import 'package:estefania_montoya_6_2021_2_p1/helpers/api_helper.dart';
 import 'package:estefania_montoya_6_2021_2_p1/models/new.dart';
 import 'package:estefania_montoya_6_2021_2_p1/models/response.dart';
@@ -39,22 +40,24 @@ class _CategoryState extends State<CategoryScreen> {
                   borderRadius: BorderRadius.circular(30)),
               margin: EdgeInsets.all(15),
               elevation: 3,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30),
-                child: Column(
-                  children: <Widget>[
-                    Image(
-                      image: NetworkImage(e.imageUrl),
-                      height: 100.0,
-                      width: 100.0,
+              child: InkWell(
+                  onTap: () => _goInfoNew(e),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Column(
+                      children: <Widget>[
+                        Image(
+                          image: NetworkImage(e.imageUrl),
+                          height: 100.0,
+                          width: 100.0,
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: Text(e.title),
+                        ),
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(e.title),
-                    ),
-                  ],
-                ),
-              ));
+                  )));
         }).toList(),
       ),
     );
@@ -100,5 +103,17 @@ class _CategoryState extends State<CategoryScreen> {
     setState(() {
       _news = response.result;
     });
+  }
+
+  void _goInfoNew(New new1) async {
+    String? result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NewInfoScreen(
+                  new1: new1,
+                )));
+    if (result == 'yes') {
+      _getNews();
+    }
   }
 }
